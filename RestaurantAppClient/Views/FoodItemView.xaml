@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maui="clr-namespace:epj.Expander.Maui;assembly=epj.Expander.Maui"
+             xmlns:Models="clr-namespace:RestaurantAppClient.Models.Menu"
+             xmlns:Converters="clr-namespace:RestaurantAppClient.Common.Converters"
+             x:Class="RestaurantAppClient.Views.FoodItemView"
+             x:DataType="Models:MenuFoodItem">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid
+        RowDefinitions="auto,auto,auto,auto"
+        ColumnDefinitions="auto,*">
+        <Grid.Triggers>
+            <DataTrigger 
+                TargetType="Grid"
+                Binding="{Binding IsLoading}"
+                Value="True">
+                <Setter
+                    Property="IsVisible"
+                    Value="False"/>
+            </DataTrigger>
+        </Grid.Triggers>
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Stroke="Transparent"
+            StrokeShape="RoundRectangle 10">
+            <Image
+                HeightRequest="300"
+                Aspect="AspectFill"
+                Source="{Binding Image.ImageBlob, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
+        </Border>
+        <Label 
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="{Binding Name}"
+            FontSize="30"
+            FontFamily="TiltWarp"
+            TextColor="#FFF"
+            Margin="0, 10, 0, 0"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Button
+            x:Name="OrderBtn"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            Text="Order"
+            Style="{StaticResource AppButton}"
+            BackgroundColor="{StaticResource Secondary}"
+            WidthRequest="130"
+            Clicked="OrderBtn_Clicked"
+            CommandParameter="{Binding .}"
+            VerticalOptions="Center"
+            HorizontalOptions="End">
+            <Button.Shadow>
+                <Shadow 
+                    Brush="Black"
+                    Offset="10,10"
+                    Radius="30"
+                    Opacity="0.3"/>
+            </Button.Shadow>
+        </Button>
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            TextColor="#FFF"
+            FontFamily="TiltWarp"
+            FontSize="25"
+            Margin="10, 0, 0, 25"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span
+                        Text="$"
+                        FontAttributes="Bold"/>
+                    <Span
+                        Text="{Binding Price}"
+                        FontAttributes="Bold"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Border
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            StrokeShape="RoundRectangle 10"
+            Stroke="Transparent">
+            <Border.Shadow>
+                <Shadow 
+                    Brush="Black"
+                    Offset="10,10"
+                    Radius="30"
+                    Opacity="0.3"/>
+            </Border.Shadow>
+            <maui:Expander
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Animated="True"
+                CollapseDuration="100"
+                ExpandDuration="200"
+                CollapseEasing="{x:Static Easing.SpringOut}"
+                ExpandEasing="{x:Static Easing.SpringIn}"
+                Padding="10"
+                BackgroundColor="{StaticResource Secondary}">
+                <maui:Expander.HeaderContent>
+                    <VerticalStackLayout>
+                        <Label
+                            Text="Ingridients"
+                            FontSize="20"
+                            FontFamily="TiltWarp"
+                            TextColor="#FFF"
+                            HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                </maui:Expander.HeaderContent>
+                <CollectionView
+                    ItemsSource="{Binding Ingridients}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                            Orientation="Vertical"
+                            Span="2"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="Models:FoodIngridient">
+                            <VerticalStackLayout
+                                Padding="20">
+                                <Image
+                                    WidthRequest="150"
+                                    Source="{Binding Image.ImageBlob, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
+                                <Label
+                                    Text="{Binding Name}"
+                                    TextColor="#FFF"
+                                    FontSize="16"
+                                    HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </maui:Expander>
+        </Border>
+    </Grid>
+</ContentView>

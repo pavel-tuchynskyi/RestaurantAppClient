@@ -1,0 +1,27 @@
+[
+  {
+    "Title": "Italian",
+    "Categories": [
+      "Pizza"
+    ],
+    "Image": "italian_menu.jpg"
+  },
+  {
+    "Title": "Japanes",
+    "Categories": [
+      "Susi",
+      "Rolls",
+      "Set"
+    ],
+    "Image": "japanese_menu.jpg"
+  },
+  {
+    "Title": "Drink",
+    "Categories": [
+      "Wine",
+      "Beer",
+      "Non-Alcohol"
+    ],
+    "Image": "drink_menu.jpg"
+  }
+]

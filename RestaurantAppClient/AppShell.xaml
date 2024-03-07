@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="RestaurantAppClient.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Pages="clr-namespace:RestaurantAppClient.Pages"
+    xmlns:local="clr-namespace:RestaurantAppClient"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarBackgroundColor="{StaticResource Secondary}"
+    Shell.TabBarTitleColor="LightGrey"
+    Shell.TabBarUnselectedColor="White">
+
+    <Shell.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Primary}"/>
+    </Shell.Behaviors>
+
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate Pages:LoadingPage}"
+        Route="Home" />
+    <ShellContent
+        Title="Main"
+        ContentTemplate="{DataTemplate Pages:MainPage}"
+        Route="MainPage" />
+    <ShellContent
+        Title="EmailConfirmation"
+        ContentTemplate="{DataTemplate Pages:EmailConfirmationPage}"
+        Route="EmailConfirmationPage" />
+
+    <ShellContent
+        Title="MenuItemDetails"
+        ContentTemplate="{DataTemplate Pages:MenuItemDetailsPage}"
+        Route="MenuItemDetailsPage"/>
+
+    <ShellContent
+        Title="EmailConfirmed"
+        ContentTemplate="{DataTemplate Pages:EmailConfirmedPage}"
+        Route="EmailConfirmedPage"/>
+
+    <ShellContent
+        Title="Checkout"
+        ContentTemplate="{DataTemplate Pages:CheckoutPage}"
+        Route="CheckoutPage"/>
+
+    <TabBar>
+        <Tab
+            Icon="silverware_icon.svg"
+            Title="Menu">
+            <ShellContent
+                Title="Menu"
+                ContentTemplate="{DataTemplate Pages:MenuPage}"
+                Route="MenuPage"/>
+        </Tab>
+        <Tab
+            Icon="cart_icon.svg"
+            Title="Cart">
+            <ShellContent
+                Title="Cart"
+                ContentTemplate="{DataTemplate Pages:CartPage}"
+                Route="CartPage"/>
+        </Tab>
+        <Tab
+            Icon="orders_icon.svg"
+            Title="Orders">
+            <ShellContent
+                Title="Orders"
+                ContentTemplate="{DataTemplate Pages:OrdersPage}"
+                Route="OrdersPage"/>
+        </Tab>
+    </TabBar>
+</Shell>

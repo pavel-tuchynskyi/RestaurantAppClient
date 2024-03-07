@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+               x:Class="RestaurantAppClient.Popups.InformationPopup"
+               CanBeDismissedByTappingOutsideOfPopup="True"
+               Size="300, 300"
+               Color="Transparent">
+    <Border
+        StrokeShape="RoundRectangle 10,10,10,10"
+        BackgroundColor="{StaticResource Primary}">
+        <Grid
+            RowDefinitions="*,auto"
+            RowSpacing="20"
+            Padding="10">
+            <Label
+                Grid.Row="0"
+                x:Name="MessageLable"
+                FontSize="18"
+                FontAttributes="Bold"
+                Text="{Binding Message}"
+                TextColor="{StaticResource Secondary}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+
+            <Button
+                Grid.Row="1"
+                WidthRequest="100"
+                x:Name="OkBtn" 
+                Text="Ok" 
+                Clicked="OkBtn_Clicked" />
+        </Grid>
+    </Border>
+</toolkit:Popup>

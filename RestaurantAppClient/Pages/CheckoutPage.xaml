@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:location="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:ViewModels="clr-namespace:RestaurantAppClient.ViewModels"
+             xmlns:Controls="clr-namespace:RestaurantAppClient.Controls"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestaurantAppClient.Pages.CheckoutPage"
+             x:DataType="ViewModels:CheckoutViewModel"
+             Title="Order Details">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:EventToCommandBehavior x:Key="EventToCommand"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid
+        RowDefinitions="*,auto,auto"
+        RowSpacing="20"
+        Padding="0, 0, 0, 20">
+        <maps:Map
+            Grid.Row="0"
+            x:Name="map" 
+            IsShowingUser="True"
+            MapClicked="map_MapClicked"/>
+        <Grid
+            Grid.Row="1"
+            RowDefinitions="auto,auto,auto"
+            RowSpacing="10"
+            ColumnDefinitions="auto,*"
+            ColumnSpacing="20"
+            Padding="15, 0">
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="City"
+                Style="{StaticResource FormLabel}"
+                VerticalOptions="Center"
+                HorizontalOptions="Start"/>
+            <Controls:BorderedEntry
+                x:Name="CityEntry"
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{Binding City, Mode=TwoWay}"
+                Placeholder="City"
+                Style="{StaticResource FormEntry}"
+                Unfocused="BorderedEntry_Unfocused"/>
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="Address"
+                Style="{StaticResource FormLabel}"/>
+            <Controls:BorderedEntry
+                x:Name="AddressEntry"
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="{Binding Address, Mode=TwoWay}"
+                Placeholder="Address"
+                Style="{StaticResource FormEntry}"
+                Unfocused="BorderedEntry_Unfocused"/>
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="Apartment"
+                Style="{StaticResource FormLabel}"/>
+            <Controls:BorderedEntry
+                Grid.Row="2"
+                Grid.Column="1"
+                Text="{Binding Apartments, Mode=TwoWay}"
+                Placeholder="Apartment"
+                Style="{StaticResource FormEntry}"
+                ReturnType="Done"/>
+        </Grid>
+        <Button
+            Grid.Row="2"
+            Text="Place order"
+            Style="{StaticResource AppButton}"
+            Command="{Binding CreateOrderCommand}"
+            Margin="15, 0">
+            <Button.Triggers>
+                <MultiTrigger TargetType="Button">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition
+                            Binding="{Binding Source={x:Reference CityEntry}, Path=Text.Length}"
+                            Value="0"/>
+                        <BindingCondition
+                            Binding="{Binding Source={x:Reference AddressEntry}, Path=Text.Length}"
+                            Value="0"/>
+                    </MultiTrigger.Conditions>
+                    <Setter
+                        Property="IsEnabled"
+                        Value="False"/>
+                </MultiTrigger>
+            </Button.Triggers>
+        </Button>
+    </Grid>
+</ContentPage>

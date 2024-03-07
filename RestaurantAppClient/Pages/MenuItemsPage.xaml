@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Converters="clr-namespace:RestaurantAppClient.Common.Converters"
+             xmlns:ViewModels="clr-namespace:RestaurantAppClient.ViewModels"
+             xmlns:Models="clr-namespace:RestaurantAppClient.Models.Menu"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:Controls="clr-namespace:RestaurantAppClient.Controls"
+             x:Class="RestaurantAppClient.Pages.MenuItemsPage"
+             Title="{Binding Category}"
+             x:DataType="ViewModels:MenuItemsViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converters:StringCombineConverter x:Key="StringCombine"/>
+            <Converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            <x:Array Type="{x:Type x:String}" x:Key="SortOptionsArray">
+                <x:String>Name</x:String>
+                <x:String>Price</x:String>
+            </x:Array>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Shell.TitleView>
+        <Label
+            Text="{Binding Category}"
+            FontSize="30"
+            TextColor="#FFF"
+            FontFamily="TiltWarp"
+            HorizontalOptions="Start"
+            VerticalOptions="Center"/>
+    </Shell.TitleView>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior
+            Command="{Binding GoToMenuCommand}"/>
+    </Shell.BackButtonBehavior>
+    
+    <Grid
+        RowDefinitions="auto,*"
+        BackgroundColor="{Binding Source={x:StaticResource Tertiary}}"
+        Padding="15, 0">
+        <FlexLayout
+            Grid.Row="0">
+            <SearchBar
+                Text="{Binding Search}"
+                Placeholder="{Binding Category, Converter={x:StaticResource StringCombine}, ConverterParameter=Search}"
+                SearchCommand="{Binding SearchMenuItemsCommand}"
+                TextColor="#FFF"
+                FontFamily="TiltWarp"
+                VerticalOptions="Center"
+                HorizontalOptions="Start"
+                WidthRequest="300">
+                <SearchBar.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        x:TypeArguments="TextChangedEventArgs"
+                        EventName="TextChanged"
+                        Command="{Binding ClearSearchCommand}"/>
+                </SearchBar.Behaviors>
+            </SearchBar>
+            <Controls:SortButton
+                SortOptions="{Binding Source={x:StaticResource SortOptionsArray}}"
+                SelectedOptionsChangedCommand="{Binding SortItemsCommand}"
+                BackgroundColor="#FFF"
+                WidthRequest="40"
+                HeightRequest="40"
+                Margin="5"/>
+        </FlexLayout>
+        <ActivityIndicator
+            Grid.Row="1"
+            WidthRequest="80"
+            HeightRequest="80"
+            IsVisible="{Binding IsLoading}"
+            IsRunning="{Binding IsLoading}"
+            VerticalOptions="Center"/>
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding MenuItems}"
+            VerticalOptions="FillAndExpand"
+            VerticalScrollBarVisibility="Always"
+            RemainingItemsThreshold="{Binding RecordsRemain}"
+            RemainingItemsThresholdReachedCommand="{Binding ChangePageNumberCommand}"
+            SelectionChangedCommand="{Binding SelectMenuItemCommand}"
+            SelectedItem="{Binding SelectedMenuItem, Mode=OneWayToSource}"
+            SelectionChangedCommandParameter="{Binding SelectedMenuItem}"
+            SelectionMode="Single">
+            <CollectionView.Triggers>
+                <DataTrigger 
+                    TargetType="CollectionView"
+                    Binding="{Binding IsLoading}"
+                    Value="True">
+                    <Setter
+                        Property="IsVisible"
+                        Value="False"/>
+                </DataTrigger>
+            </CollectionView.Triggers>
+            <CollectionView.ItemTemplate>
+                <DataTemplate
+                    x:DataType="Models:MenuFoodItem">
+                    <Border
+                        StrokeShape="RoundRectangle 10"
+                        Margin="0,0,0, 20">
+                        <Grid
+                            RowDefinitions="*,auto,auto">
+                            <Image 
+                                Grid.Row="0"
+                                Grid.RowSpan="3"
+                                HeightRequest="300"
+                                Aspect="AspectFill"
+                                Source="{Binding Image.ImageBlob, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
+                            <Label
+                                Grid.Row="1"
+                                Text="{Binding Name}"
+                                TextColor="#FFF"
+                                FontSize="30"
+                                FontFamily="TiltWarp"
+                                Margin="10, 0"/>
+                            <Label
+                                Grid.Row="2"
+                                TextColor="#FFF"
+                                FontSize="25"
+                                Margin="10, 0, 0, 10">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span
+                                            Text="$"
+                                            FontAttributes="Bold"/>
+                                        <Span
+                                            Text="{Binding Price}"
+                                            FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"></VisualState>
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="Transparent"></Setter>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ViewModels="clr-namespace:RestaurantAppClient.ViewModels"
+             xmlns:Models="clr-namespace:RestaurantAppClient.Models.Orders"
+             xmlns:Converters="clr-namespace:RestaurantAppClient.Common.Converters"
+             xmlns:Controls="clr-namespace:RestaurantAppClient.Controls"
+             x:Class="RestaurantAppClient.Pages.OrdersPage"
+             x:DataType="ViewModels:OrdersViewModel"
+             BackgroundColor="{StaticResource Tertiary}"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            <x:Array Type="{x:Type x:String}" x:Key="SortOptionsArray">
+                <x:String>Status</x:String>
+                <x:String>Price</x:String>
+                <x:String>CreatedAt</x:String>
+            </x:Array>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid
+        RowDefinitions="auto, *"
+        ColumnDefinitions="*,*,*"
+        RowSpacing="10"
+        Padding="10">
+        <Label
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="Orders"
+            FontSize="25"
+            TextColor="#FFF"
+            FontFamily="TiltWarp"
+            HorizontalOptions="Center"/>
+        <Controls:SortButton
+            Grid.Row="0"
+            Grid.Column="2"
+            SortOptions="{Binding Source={x:StaticResource SortOptionsArray}}"
+            SelectedOptionsChangedCommand="{Binding SortItemsCommand}"
+            BackgroundColor="#FFF"
+            WidthRequest="40"
+            HeightRequest="40"/>
+        <ActivityIndicator
+            Grid.Row="1"
+            Grid.Column="1"
+            WidthRequest="80"
+            HeightRequest="80"
+            IsVisible="{Binding IsLoading}"
+            IsRunning="{Binding IsLoading}"
+            VerticalOptions="Center"/>
+        <CollectionView
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            ItemsSource="{Binding Orders}"
+            RemainingItemsThreshold="{Binding RecordsRemain}"
+            RemainingItemsThresholdReachedCommand="{Binding ChangePageNumberCommand}">
+            <CollectionView.Triggers>
+                <DataTrigger 
+                    TargetType="CollectionView"
+                    Binding="{Binding IsLoading}"
+                    Value="True">
+                    <Setter
+                        Property="IsVisible"
+                        Value="False"/>
+                </DataTrigger>
+            </CollectionView.Triggers>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="Models:Order">
+                    <Border
+                        StrokeShape="RoundRectangle 10"
+                        Stroke="Transparent"
+                        BackgroundColor="{StaticResource Primary}"
+                        Margin="0,10,0,0"
+                        HeightRequest="350">
+                        <Grid
+                            RowDefinitions="auto, *, auto, auto, auto"
+                            ColumnDefinitions="auto,*"
+                            RowSpacing="10"
+                            ColumnSpacing="20"
+                            Padding="15">
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Text="Address:"
+                                Style="{StaticResource CollectionItemTextSmall}"
+                                FontFamily="TiltWarp"/>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Style="{StaticResource CollectionItemTextSmall}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span
+                                            Text="{Binding City}"/>
+                                        <Span
+                                            Text=", "/>
+                                        <Span
+                                            Text="{Binding Address}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <ScrollView
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Orientation="Horizontal">
+                                <HorizontalStackLayout
+                                    BindableLayout.ItemsSource="{Binding Items}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="Models:OrderItem">
+                                            <Border
+                                                Stroke="Transparent"
+                                                StrokeShape="RoundRectangle 10"
+                                                BackgroundColor="{StaticResource Secondary}">
+                                                <Grid
+                                                    RowDefinitions="*,*, auto"
+                                                    ColumnDefinitions="auto,auto"
+                                                    ColumnSpacing="10"
+                                                    MinimumWidthRequest="250"
+                                                    HeightRequest="130"
+                                                    Padding="10">
+                                                    <Border
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Grid.RowSpan="3"
+                                                        HeightRequest="100"
+                                                        WidthRequest="100"
+                                                        Stroke="Transparent"
+                                                        StrokeShape="RoundRectangle 10">
+                                                        <Image
+                                                            Aspect="AspectFill"
+                                                            Source="{Binding Image.ImageBlob, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
+                                                    </Border>
+                                                    <Label
+                                                        Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        Text="{Binding Name}"
+                                                        Style="{StaticResource CollectionItemTextSmall}"
+                                                        FontFamily="TiltWarp"/>
+                                                    <Label
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Style="{StaticResource CollectionItemTextSmall}">
+                                                        <Label.FormattedText>
+                                                            <FormattedString>
+                                                                <Span
+                                                                    Text="$"/>
+                                                                <Span
+                                                                    Text="{Binding Price}"/>
+                                                            </FormattedString>
+                                                        </Label.FormattedText>
+                                                    </Label>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+                            </ScrollView>
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Text="Status:"
+                                FontFamily="TiltWarp"
+                                Style="{StaticResource CollectionItemTextSmall}"/>
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Text="{Binding Status}"
+                                TextColor="Yellow"
+                                Style="{StaticResource CollectionItemTextSmall}"/>
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Text="Date Created:"
+                                FontFamily="TiltWarp"
+                                Style="{StaticResource CollectionItemTextSmall}"/>
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Text="{Binding CreatedAt}"
+                                Style="{StaticResource CollectionItemTextSmall}"/>
+                            <Label
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Text="Total Price:"
+                                FontFamily="TiltWarp"
+                                Style="{StaticResource CollectionItemTextSmall}"/>
+                            <Label
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Style="{StaticResource CollectionItemTextSmall}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span
+                                            Text="$"/>
+                                        <Span
+                                            Text="{Binding Price}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

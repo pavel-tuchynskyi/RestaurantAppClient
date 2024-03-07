@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Views="clr-namespace:RestaurantAppClient.Views"
+             xmlns:ViewModels="clr-namespace:RestaurantAppClient.ViewModels"
+             xmlns:Models="clr-namespace:RestaurantAppClient.Models.Menu"
+             x:DataType="ViewModels:MenuPageViewModel"
+             x:Class="RestaurantAppClient.Pages.MenuPage"
+             Title="Menu"
+             Shell.NavBarIsVisible="False">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False"/>
+    </Shell.BackButtonBehavior>
+
+    <VerticalStackLayout
+        Spacing="20"
+        BackgroundColor="{Binding Source={x:StaticResource Primary}}">
+        <Label 
+            Text="Menu"
+            FontSize="40"
+            TextColor="#FFF"
+            FontFamily="TiltWarp"
+            Margin="20"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <CarouselView
+            x:Name="MenuCarousel"
+            ItemsSource="{Binding Menus}"
+            Loop="False"
+            VerticalOptions="Center"
+            IndicatorView="Indicator">
+            <CarouselView.Shadow>
+                <Shadow 
+                    Brush="Black"
+                    Offset="10,10"
+                    Radius="40"
+                    Opacity="0.5"/>
+            </CarouselView.Shadow>
+            <CarouselView.ItemTemplate>
+                <DataTemplate x:DataType="Models:Menu">
+                    <Views:FoodMenuView                       
+                        CategoryItemSource="{Binding Categories}"
+                        MenuTitle="{Binding Title}"
+                        MenuImageSource="{Binding Image}"
+                        CategorySelectedCommand="{Binding Source={RelativeSource AncestorType={x:Type ViewModels:MenuPageViewModel}}, Path=MenuCategorySelectedCommand}"/>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+        <IndicatorView x:Name="Indicator"
+            IndicatorColor="{Binding Source={x:StaticResource Secondary}}"
+            SelectedIndicatorColor="White"
+            HorizontalOptions="Center"/>
+    </VerticalStackLayout>
+</ContentPage>

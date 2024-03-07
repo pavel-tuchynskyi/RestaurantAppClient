@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ViewModels="clr-namespace:RestaurantAppClient.ViewModels"
+             x:Class="RestaurantAppClient.Pages.MenuItemDetailsPage"
+             Title="Details"
+             Padding="20, 10"
+             BackgroundColor="{StaticResource Primary}"
+             x:Name="Self">
+    <Shell.TitleView>
+        <Label
+            Text="Details"
+            FontSize="30"
+            TextColor="#FFF"
+            FontFamily="TiltWarp"
+            HorizontalOptions="Start"
+            VerticalOptions="Center"/>
+    </Shell.TitleView>
+    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior
+            Command="{Binding GoToMenuItemsCommand}"/>
+    </Shell.BackButtonBehavior>
+    
+    <ActivityIndicator
+        WidthRequest="80"
+        HeightRequest="80"
+        Color="{StaticResource Secondary}"
+        IsVisible="{Binding IsLoading}"
+        IsRunning="{Binding IsLoading}"
+        VerticalOptions="Center"/>
+</ContentPage>

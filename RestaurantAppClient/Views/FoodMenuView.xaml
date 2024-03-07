@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestaurantAppClient.Views.FoodMenuView">
+    
+    <Border
+        StrokeShape="RoundRectangle 10"
+        StrokeThickness="3"
+        Stroke="{Binding Source={x:StaticResource Secondary}}">
+        <Grid
+            x:Name="MenuGrid"
+            RowDefinitions="*"
+            ColumnDefinitions="*">
+            <Grid
+                RowDefinitions="*,auto,*"
+                Grid.Row="0"
+                Grid.Column="0">
+                <Image 
+                    Grid.Row="0"
+                    Grid.RowSpan="3"
+                    x:Name="MenuImage"
+                    Aspect="AspectFill"
+                    HeightRequest="500"
+                    Source="{Binding MenuImageSource}"/>
+                <StackLayout
+                    Grid.Row="1"
+                    BackgroundColor="{Binding Source={x:StaticResource Tertiary}}"
+                    Opacity=".9"
+                    WidthRequest="400"
+                    HeightRequest="100"
+                    Padding="0, 25">
+                    <Label
+                        x:Name="TitleLabel"
+                        Text="{Binding MenuTitle}"
+                        BackgroundColor="{Binding Source={x:StaticResource Tertiary}}"
+                        FontSize="40"
+                        TextColor="#7FC7D9"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"/>
+                </StackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ShowCategories" NumberOfTapsRequired="1"/>
+                </Grid.GestureRecognizers>
+            </Grid>
+        </Grid>
+    </Border>
+</ContentView>

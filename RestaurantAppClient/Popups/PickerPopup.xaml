@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             x:Class="RestaurantAppClient.Popups.PickerPopup"
+             CanBeDismissedByTappingOutsideOfPopup="True"
+             Color="Transparent"
+             x:Name="Self">
+    <Border
+        StrokeShape="RoundRectangle 10"
+        MinimumHeightRequest="300"
+        MinimumWidthRequest="300"
+        Stroke="Transparent"
+        BackgroundColor="{StaticResource Tertiary}">
+        <CollectionView
+            x:Name="ItemsCollection"
+            ItemsSource="{Binding Source={x:Reference Self}, Path=Items}"
+            SelectionChanged="ItemsCollection_SelectionChanged"
+            SelectionMode="Single"
+            VerticalOptions="Center">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Padding="20"
+                        BackgroundColor="{StaticResource Primary}"
+                        Stroke="Transparent">
+                        <Label
+                            Text="{Binding .}"
+                            FontSize="25"
+                            TextColor="#FFF"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"/>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Border>
+</toolkit:Popup>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ViewModels="clr-namespace:RestaurantAppClient.ViewModels"
+             xmlns:Models="clr-namespace:RestaurantAppClient.Models.Menu"
+             xmlns:Converters="clr-namespace:RestaurantAppClient.Common.Converters"
+             xmlns:Helpers="clr-namespace:RestaurantAppClient.Common.Helpers"
+             x:Class="RestaurantAppClient.Pages.CartPage"
+             Title="Cart"
+             x:DataType="ViewModels:CartPageViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Tertiary}"
+             Padding="10">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSource"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid
+        RowDefinitions="30, *, auto, auto"
+        RowSpacing="20">
+        <Label 
+            Grid.Row="0"
+            Text="Your Cart"
+            FontSize="25"
+            TextColor="#FFF"
+            FontFamily="TiltWarp"
+            HorizontalOptions="Center"/>
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding MenuItems}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate
+                    x:DataType="Models:MenuItem">
+                    <Border
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="15"
+                        BackgroundColor="{StaticResource Primary}">
+                        <Grid
+                            RowDefinitions="*,*"
+                            ColumnDefinitions="*,*,auto">
+                            <Image
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Source="{Binding Image.ImageBlob, Converter={StaticResource ByteArrayToImageSource}}"
+                                HeightRequest="100"
+                                WidthRequest="100"
+                                Aspect="AspectFill"
+                                HorizontalOptions="Start"/>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Text="{Binding Name}"
+                                FontFamily="TiltWarp"
+                                TextColor="{StaticResource Secondary}"
+                                FontSize="20"/>
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                TextColor="{StaticResource Secondary}"
+                                FontSize="20"
+                                VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span
+                                            FontFamily="TiltWarp"
+                                            Text="$"/>
+                                        <Span
+                                            FontFamily="TiltWarp"
+                                            Text="{Binding Price}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                FontFamily="Icons"
+                                Text="{Static Helpers:IconFont.Cross}"
+                                FontSize="18"
+                                TextColor="{StaticResource Secondary}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ViewModels:CartPageViewModel}}, Path=RemoveItemCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label
+            Grid.Row="2"
+            FontSize="25"
+            TextColor="#FFF">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span
+                        Text="Total: "
+                        FontFamily="TiltWarp"/>
+                    <Span
+                        Text="$"
+                        FontFamily="TiltWarp"/>
+                    <Span
+                        Text="{Binding TotalPrice}"
+                        FontFamily="TiltWarp"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Button
+            Grid.Row="3"
+            Text="Checkout"
+            Style="{StaticResource AppButton}"
+            Command="{Binding CreateOrderCommand}">
+            <Button.Triggers>
+                <DataTrigger
+                    TargetType="Button"
+                    Binding="{Binding MenuItems.Count}"
+                    Value="0">
+                    <Setter
+                        Property="IsEnabled"
+                        Value="False"/>
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
+    </Grid>
+</ContentPage>

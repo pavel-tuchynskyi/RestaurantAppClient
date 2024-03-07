@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controlls="clr-namespace:RestaurantAppClient.Controls"
+             x:Class="RestaurantAppClient.Pages.MainPage"
+             BackgroundColor="{Binding Source={x:StaticResource Tertiary}}"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Title="MainPage">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False"/>
+    </Shell.BackButtonBehavior>
+    <Border
+        StrokeShape="RoundRectangle 10"
+        Margin="20"
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        BackgroundColor="{Binding Source={x:StaticResource Secondary}}"
+        Stroke="Transparent"
+        Padding="0, 30">
+        <Border.Shadow>
+            <Shadow 
+                Brush="Black"
+                Offset="10,10"
+                Radius="30"
+                Opacity="0.3"/>
+        </Border.Shadow>
+        <Grid
+            RowDefinitions="auto,auto,auto"
+            ColumnDefinitions="*,*"
+            RowSpacing="20"
+            ColumnSpacing="30">
+            <Label
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Text="Welcome!"
+                TextColor="White"
+                FontFamily="TiltWarp"
+                FontSize="40"
+                HorizontalTextAlignment="Center"/>
+            <Image 
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Source="logo.png"/>
+            <Button
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="Login"
+                Style="{StaticResource AppButton}"
+                VerticalOptions="Center" 
+                HorizontalOptions="End"
+                x:Name="LoginBtn"
+                Clicked="LoginBtn_Clicked"/>
+            <Button
+                Grid.Row="2"
+                Grid.Column="1"
+                Text="Register"
+                Style="{StaticResource AppButton}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Start"
+                x:Name="RegisterBtn"
+                Clicked="RegisterBtn_Clicked"/>
+        </Grid>
+    </Border>
+</ContentPage>

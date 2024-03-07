@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ViewModels="clr-namespace:RestaurantAppClient.ViewModels"
+             x:Class="RestaurantAppClient.Pages.EmailConfirmedPage"
+             Title="EmailConfirmedPage"
+             x:DataType="ViewModels:EmailConfirmedViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="{Binding Source={x:StaticResource Tertiary}}">
+    <VerticalStackLayout
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        Padding="20">
+        <ActivityIndicator
+            Color="{Binding Source={x:StaticResource Secondary}}"
+            IsEnabled="{Binding IsLoading}"
+            IsRunning="{Binding IsLoading}"
+            WidthRequest="80"
+            HeightRequest="80"
+            VerticalOptions="Center"/>
+        <Border
+            Stroke="Transparent"
+            StrokeShape="RoundRectangle 10"
+            Padding="20"
+            BackgroundColor="{StaticResource Primary}"
+            IsVisible="False">
+            <Border.Triggers>
+                <DataTrigger 
+                    TargetType="Border"
+                    Binding="{Binding IsConfirmed}"
+                    Value="True">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True"/>
+                </DataTrigger>
+            </Border.Triggers>
+            <Label
+                Text="Email successfully confirmed. You will be redirected soon."
+                FontSize="18"
+                TextColor="#FFF"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"/>
+        </Border>
+    </VerticalStackLayout>
+</ContentPage>

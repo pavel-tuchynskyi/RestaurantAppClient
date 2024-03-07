@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ViewModels="clr-namespace:RestaurantAppClient.ViewModels"
+             xmlns:Controls="clr-namespace:RestaurantAppClient.Controls"
+             x:Class="RestaurantAppClient.Pages.RegistrationPage"
+             x:DataType="ViewModels:RegistrationViewModel"
+             Title="Registration"
+             Shell.TabBarIsVisible="False">
+    <Grid
+        RowDefinitions="100,*,100"
+        Padding="20"
+        BackgroundColor="{Binding Source={x:StaticResource Tertiary}}">
+        <ActivityIndicator
+            Grid.Row="1"
+            Color="{Binding Source={x:StaticResource Secondary}}"
+            WidthRequest="80"
+            HeightRequest="80"
+            IsVisible="{Binding IsLoading}"
+            IsRunning="{Binding IsLoading}"
+            VerticalOptions="Center"/>
+        <Border
+            Grid.Row="1"
+            Padding="20"
+            StrokeShape="RoundRectangle 10,10,10,10">
+            <Border.Triggers>
+                <DataTrigger 
+                    TargetType="Border"
+                    Binding="{Binding IsLoading}"
+                    Value="True">
+                    <Setter
+                        Property="IsVisible"
+                        Value="False"/>
+                </DataTrigger>
+            </Border.Triggers>
+            <Grid
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="FillAndExpand"
+                RowDefinitions="*,*,*,*,*,*"
+                ColumnDefinitions="auto,*"
+                RowSpacing="20"
+                ColumnSpacing="15">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="First Name"
+                    FontSize="15"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"/>
+                <Controls:BorderedEntry
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="{Binding User.FirstName}"
+                    Placeholder="First Name"
+                    Style="{StaticResource FormEntry}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Last Name"
+                    FontSize="15"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"/>
+                <Controls:BorderedEntry
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="{Binding User.LastName}"
+                    Placeholder="Last Name"
+                    Style="{StaticResource FormEntry}"/>
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Email"
+                    FontSize="15"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"/>
+                <Controls:BorderedEntry
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Text="{Binding User.Email}"
+                    Placeholder="Email"
+                    Style="{StaticResource FormEntry}"/>
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Text="Phone"
+                    FontSize="15"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"/>
+                <Controls:BorderedEntry
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Text="{Binding User.Phone}"
+                    Placeholder="Phone"
+                    Style="{StaticResource FormEntry}"
+                    Keyboard="Telephone"/>
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Text="Passsword"
+                    FontSize="15"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"/>
+                <Controls:BorderedEntry
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Text="{Binding User.Password}"
+                    Placeholder="Password"
+                    Style="{StaticResource FormEntry}"
+                    IsPassword="True"
+                    ReturnType="Done"/>
+                <Button
+                    Grid.Row="5"
+                    Grid.ColumnSpan="2"
+                    Text="Register"
+                    FontSize="18"
+                    Command="{Binding RegisterCommand}"
+                    Style="{StaticResource AppButton}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>
